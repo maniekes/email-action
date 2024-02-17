@@ -1,14 +1,9 @@
-import { simpleParser, ParsedMail } from 'mailparser';
+import {simpleParser, ParsedMail} from 'mailparser';
 import Imap from 'imap';
-import { Readable } from 'stream';
+import {Readable} from 'stream';
+import {imapConfig} from "./config";
 
-const imap = new Imap({
-    user: 'your_email@example.com',
-    password: 'your_password',
-    host: 'imap.example.com',
-    port: 993,
-    tls: true,
-});
+const imap = new Imap(imapConfig);
 
 function openInbox(cb: (err: Error, mailbox: Imap.Box) => void) {
     imap.openBox('INBOX', true, cb);
@@ -19,7 +14,7 @@ imap.once('ready', () => {
         if (err) throw err;
         imap.search(['UNSEEN'], (err, results) => {
             if (err || !results.length) throw err;
-            const f = imap.fetch(results, { bodies: '' });
+            const f = imap.fetch(results, {bodies: ''});
             f.on('message', (msg) => {
                 msg.on('body', (stream) => {
                     simpleParser(stream as unknown as Readable, (err: Error, mail: ParsedMail) => {
