@@ -5,6 +5,7 @@ import {IMAP_CONFIG, TASKS, SMTP_CONFIG, VALID_SENDERS, CHECK_INTERVAL} from "./
 import {exec} from "child_process";
 import nodemailer from 'nodemailer';
 
+require('log-timestamp');
 const imap = new Imap(IMAP_CONFIG);
 const transporter = nodemailer.createTransport(SMTP_CONFIG);
 
@@ -109,8 +110,9 @@ imap.once('ready', () => {
     setInterval(checkEmails, CHECK_INTERVAL); // Check emails every 5 minutes
 });
 
-imap.once('error', (err: any) => {
+imap.on('error', (err: any) => {
     console.error('IMAP error:', err);
+    imap.connect();
 });
 
 imap.once('end', () => {
