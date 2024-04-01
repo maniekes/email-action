@@ -15,6 +15,7 @@ function executeCommand(command: string, email: string, subject: string, uid: nu
         if (error) {
             response = `Error executing command: ${stderr}`;
         }
+        console.log(`sending response ${response} to ${email}`);
         sendReply(email, subject, response);
     });
 }
