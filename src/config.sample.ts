@@ -1,6 +1,7 @@
 // copy this file as config.ts
 import Connection from "imap";
 import {EmailTask} from "./emailTask";
+
 export const imapConfig: Connection.Config = {
     user: 'test@test.pl',
     password: '1234567890',
@@ -11,4 +12,8 @@ export const imapConfig: Connection.Config = {
 
 export const VALID_SENDERS = ['lol@lol.pl'];
 
-export const TASKS: EmailTask[] = [{subject: "start something", command: "echo dupa;"}];
+export const TASKS: EmailTask[] = [{
+    subject: "start something",
+    command: () => "echo dupa;",
+    replyTo: 'no-reply@email.com'
+}];

@@ -1,5 +1,6 @@
 export interface EmailTask {
     subject: string,
-    command: string,
+    command: (text: string | undefined) => string,
     skipReply?: boolean;
+    replyTo?: string;
 }

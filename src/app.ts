@@ -75,7 +75,7 @@ function checkEmails() {
                         console.log(`Email from: ${mail.from?.text}, Subject: ${mail.subject}`);
                         const senderEmail = mail.from?.value[0].address;
                         if (!senderEmail || !mail.subject) {
-                            console.error('missing adress or subject:', mail);
+                            console.error('missing address or subject:', mail);
                             markAsRead(uid);
                             return;
                         }
@@ -88,7 +88,8 @@ function checkEmails() {
                         const task = TASKS.find(task => task.subject === mail.subject);
                         if (task) {
                             console.log('executing!')
-                            executeCommand(task.command, senderEmail, mail.subject, uid);
+                            let replyTo = task.replyTo ? task.replyTo : senderEmail;
+                            executeCommand(task.command(mail.text), replyTo, mail.subject, uid);
                         }
                         markAsRead(uid);
                     });
